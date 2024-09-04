@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мемы</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form action="/mem" id="imageForm" method="get">
+        <div class="form-group">
+          <label for="imageName">Номер мема(331-1949)(некоторые номера не имеют мема)</label>
+          <input name="imageName" class="form-control" type="text" placeholder="Номер">
+        </div>
+        <button type="submit" id="get-meme-btn">Получить мем</button>
+      </form>
+    </div>
+    <div id="imageContainer" class="text-center">
+    </div>
+    <script>
+      document.getElementById('imageForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const imageName = this.imageName.value;
+        fetch(`/image?imageName=${imageName}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const base64Image = data.image;
+            document.getElementById(
+              'imageContainer'
+              ).innerHTML = `<img src="data:image/png;base64,${base64Image}" class="img-fluid" style="width: 500px" alt="Random Image">`;
+          })
+          .catch((error) => console.error('Error fetching the image:', error));
+      });
+    </script>
+  </body>
+</html>
